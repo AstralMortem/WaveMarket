@@ -11,7 +11,7 @@ from datetime import datetime
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django_htmx.http import HttpResponseClientRefresh
-from wayforpay.wayforpay import WayForPayAPI, PaymentRequests
+from cart.wayforpay_module.wayforpay import WayForPayAPI, PaymentRequests
 from django.contrib.sites.models import Site
 from django.views.decorators.csrf import csrf_exempt
 

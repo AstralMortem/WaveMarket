@@ -1,6 +1,6 @@
 from pathlib import Path
 
-
+import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -9,14 +9,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-6qtv!xxh$mmw4g1#b7kexsr1s@gyw!z&iapjlxqlna6)ybp6jh'
+SECRET_KEY = os.environ.get("SECRET_KEY","super_secret_keu@##$@#$")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-site = "https://641a-91-226-254-123.eu.ngrok.io"
+DEBUG = False
 
-ALLOWED_HOSTS = ["localhost"]
-ALLOWED_HOSTS.append(site.split("/")[2])
+
+ALLOWED_HOSTS = []
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:    
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 
 
@@ -48,6 +50,7 @@ CRISPY_TEMPLATE_PACK = "bulma"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -55,6 +58,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "django_htmx.middleware.HtmxMiddleware",
+    
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -81,13 +85,20 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
+
+if not DEBUG:
+    import dj_database_url
+
+    DATABASES = {
+    'default':dj_database_url.parse(os.environ.get('DATABASES_URL'))
+    }
+else:
+    DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -113,7 +124,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Kyiv'
 
 USE_I18N = True
 
@@ -123,12 +134,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
-STATIC_ROOT = ''
-
+STATIC_URL = '/static/'
+if not DEBUG:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+else:
+    STATIC_ROOT = ""
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
@@ -143,12 +158,13 @@ LOGOUT_REDIRECT_URL = "/"
 CART_SESSION_ID = "cart"
 SITE_ID = 1
 
-WAYFORPAY_ACCOUNT = "freelance_user_6071ed13d2e63"
-WAYFORPAY_KEY = "e98d1e932b20227ffe0d2cf0244efbca421ebaac"
+WAYFORPAY_ACCOUNT = os.environ.get("WAYFORPAY_ACCOUNT")
+WAYFORPAY_KEY = os.environ.get("WAYFORPAY_KEY")
 
-CSRF_TRUSTED_ORIGINS = ['https://42e1-91-226-254-123.eu.ngrok.io', 'https://secure.wayforpay.com']
+CSRF_TRUSTED_ORIGINS = ['https://secure.wayforpay.com']
 
 
-CSRF_TRUSTED_ORIGINS.append(site)
+if RENDER_EXTERNAL_HOSTNAME:
+    CSRF_TRUSTED_ORIGINS.append("https://"+RENDER_EXTERNAL_HOSTNAME)  
 
 SESSION_COOKIE_SECURE = False
