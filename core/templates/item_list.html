@@ -1,0 +1,63 @@
+{% load startwith%}
+
+{%for item in items%}
+
+{%if forloop.last%}
+    {%if page_obj.has_next%}
+        {%if request.path|startswith:"/tags"%}
+        <div class="column is-one-quarter" hx-get="{{request.path}}?page={{page_obj.number|add:1}}"
+        hx-trigger="revealed"
+        hx-swap="afterend" hx-target="this">
+        {%elif request.path|startswith:"/category" %}
+        <div class="column is-one-quarter" hx-get="{{request.path}}?page={{page_obj.number|add:1}}"
+        hx-trigger="revealed"
+        hx-swap="afterend" hx-target="this">
+        {%else%}
+        <div class="column is-one-quarter" hx-get="{%url 'shop:item_list'%}?page={{page_obj.number|add:1}}"
+        hx-trigger="revealed"
+        hx-swap="afterend" hx-target="this">
+        {%endif%}
+    {%else%}
+        <div class="column is-one-quarter">
+    {%endif%}
+{%else%}
+<div class="column is-one-quarter">
+{%endif%}
+
+
+
+
+    <div class="card">
+        <div class="card-image">
+            <a href="{{item.get_absolute_url}}">
+                <figure class="image is-4by3">
+                    <img src="{{item.get_photo}}"
+                            alt="{{item.name}}"/>
+                </figure>
+            </a>
+        </div>
+        <div class="card-content">
+            <div class="content has-text-centered">
+                <p class="title is-5">{{item.name}}</p>
+                    {% if item.discount_price%}
+                        <p>
+                            <span class="title is-6" style="color:gray;"><small><s>{{item.price}}$</s></small></span>
+                            <span class="title is-5" style="color:red;">{{item.discount_price}}$</span>
+                        </p>
+                    {%else%}
+                        <p class="title is-5">{{item.price}}$</p>
+                    {%endif%}
+            </div>
+        </div>
+        <footer class="card-footer">
+            <div class="card-footer-item">
+                <a hx-get="{%url 'cart:cart-add' items_id=item.id%}" hx-swap="none"
+                class="button is-rounded is-dark is-outlined">Add to cart</a>
+            </div>
+        </footer>
+    </div>
+</div>
+
+{%empty%}
+    <p class="title">No Items:<</p>
+{%endfor%}

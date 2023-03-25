@@ -1,0 +1,75 @@
+{% extends 'base.html'%}
+
+{%block header_content%}
+{%include 'navigation.html'%}
+{%endblock%}
+
+{% block content %}
+
+<div class="container mt-5">
+    <div class="columns is-multiline">
+        <div class="column">
+            <div class="card">
+                <figure class="image">
+                    <img src="{{items.get_photo}}">
+                </figure>
+            </div>
+        </div>
+        <div class="column">
+            <div class="columns is-multiline">
+                <div class="column is-12">
+                    <div class="card has-text-centered">
+
+                        <div class="card-content">
+                            <p class="title is-2">{{items.name}}</p>
+                            {%if items.discount_price%}
+                                <p>
+                                <span class="title is-6" style="color:gray;"><small><s>{{items.price}}$</s></small></span>
+                                <span class="title is-5" style="color:red;">{{items.discount_price}}$</span>
+                                </p>
+                            {%else%}
+                                <p class="title is-5">{{items.price}}$</p>
+                            {%endif%}
+                            
+                            <div class="has-text-centered mt-3 mb-4">
+                                <a hx-get="#" hx-swap='none' class="button is-rounded is-dark is-outlined">Add to cart</a>
+                            </div>
+                            <div class="has-text-centered mt-5 mb-3">
+                                {%for tag in items.tags.all%}
+                                <a href="{{tag.get_absolute_url}}" class="tag is-primary">#{{tag.name}}</a>
+                                {%endfor%}
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="column is-12">
+                    <div class="card has-text-centered">
+                        <div class='card-content'>
+                            
+                            <p>{{items.description}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if items.audio_fragments%}
+    <div class="columns is-multiline">
+        <div class="column is-12">
+            <div class="card">
+                <div class="card-content">
+                    <div class="columns is-multiline">
+                        {%for audio in items.audio_fragments.all%}
+                            <div class="column">
+                                
+                            </div>
+                        {%endfor%}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {%endif%}
+</div>
+{% endblock %}

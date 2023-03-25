@@ -1,0 +1,20 @@
+{%extends 'base.html'%}
+
+{%block header_content%}
+    {%include 'navigation.html' %}
+{%endblock%}
+
+{%block content%}
+
+<div class="container mt-5 has-text-centered">
+<button onclick="document.getElementById('subm').click()" class="button is-primary is-outlined p-6">Оплата</button>
+<script id='widget-wfp-script' language='javascript' type='text/javascript' src='https://secure.wayforpay.com/server/pay-widget.js'></script>
+
+<form method="post" action="https://secure.wayforpay.com/pay" hidden accept-charset="utf-8">
+    {% csrf_token %}
+    {{ widget|safe }}
+</div>
+
+
+
+{%endblock%}

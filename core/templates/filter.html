@@ -1,0 +1,17 @@
+
+{%load crispy_forms_tags%}
+
+<aside class="menu has-text-centered">
+    <p class="menu-label title is-5">
+        Filter
+      </p>
+      <form hx-post="{%url 'shop:filter' %}" hx-target="#items_list" hx-swap="innerHTML">
+    <div class="card mt-4 ml-3">
+        {{filter.form |crispy}}
+    </div>
+
+
+    <input type="hidden" name="category_slug" value="{{view.kwargs.slug}}"></input>
+    <button type="submit" class="button is-primary is-outlined mt-4 ">Search</button>
+</form>
+</aside>

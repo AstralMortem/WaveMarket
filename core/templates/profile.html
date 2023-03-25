@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{%block header_content%}
+{%include 'navigation.html'%}
+{%endblock%}
+
+{%block content%}
+<div class="container">
+<div class="columns is-multiline ">
+    <div class="column is-half is-offset-one-quarter" >
+        <div class="card mt-2 has-text-centered">
+            <div class="card-content" id="user-card">
+                {%include 'user_settings_card.html'%}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="columns is-multiline">
+    <div class="column is-half">
+        <div class="card">
+            <div class="card-content">
+                <p class="title is-5 has-text-centered">
+                    Your discount: {{request.user.discount}}%
+                </p>
+                <p class="title is-5">
+                    Your bought: {{orders.length}} items
+                </p>
+                <p class="title is-6">
+                    You spent: {{orders.total}}$
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="column is-half" id="address-card">
+        {%include 'address_card.html'%}
+    </div>
+</div>
+</div>
+{%endblock%}

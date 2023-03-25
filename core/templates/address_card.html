@@ -1,0 +1,38 @@
+<div class="card">
+    
+    {%if request.user.address%}
+    <div class="card-content" id="address-card-content">
+        <p class="title is-5 has-text-centered">Billing address</p>
+        <p class="title is-6">Country: {{request.user.address.country.name}}</p>
+        <p class="title is-6">State: {{request.user.address.state}}</p>
+        <p class="title is-6">City: {{request.user.address.city}}</p>
+        <p class="title is-6">Street: {{request.user.address.street}}</p>
+        <p class="title is-6">Build: {{request.user.address.build}}</p>
+        <p class="title is-6">Zip Code: {{request.user.address.zip}}</p>
+    </div>
+    <footer class="card-footer">
+        <a class="card-footer-item" hx-get="{%url 'account:address-update' id=request.user.address.id%}"
+        hx-swap="innerHTML" hx-target="#address-card-content">
+        <span class="icon is-primary is-rounded button p-3">
+            <i class="fa-solid fa-pen"></i>
+        </span></a>
+        <a class="card-footer-item" hx-get="{%url 'account:address-delete' id=request.user.address.id%}"
+        hx-swap="innerHTML" hx-target="#address-card">
+        <span class="icon is-danger is-rounded button p-3">
+            <i class="fa-solid fa-trash"></i>
+        </span></a>
+    </footer>
+    {%else%}
+    <div class="card-content" id="address-card-content">
+        <p class="title is-5">Billing address</p>
+    </div>
+    <footer class="card-footer" >
+        <a class="card-footer-item " hx-get="{%url 'account:address-add'%}"
+        hx-swap="innerHTML" hx-target="#address-card-content">
+        <span class="icon is-primary is-rounded button p-3">
+            <i class="fa-solid fa-plus"></i>
+        </span>
+    </a>
+    </footer>
+    {%endif%}
+</div>

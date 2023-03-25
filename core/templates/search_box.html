@@ -1,0 +1,13 @@
+{%for item in s_items%}
+<a class="navbar-item" href="{{item.get_absolute_url}}">
+    <figure class="image is-32x32">
+        <img src="{{item.get_photo}}">
+    </figure>
+    {{item.name}} |
+    {%if item.discount_price%}
+        {{item.discount_price}}
+    {%else%}
+        {{item.price}}
+    {%endif%}
+     </a>
+{%endfor%}

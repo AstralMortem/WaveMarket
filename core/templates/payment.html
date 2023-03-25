@@ -1,0 +1,21 @@
+{%extends 'base.html'%}
+
+{%block header_content%}
+    {% include 'navigation.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="container mt-6">
+    {%if request.user.is_authenticated%}
+            <div class="has-text-centered mt-6 mb-4">
+                <a href="{%url 'cart:payment' %}" class="button is-primary is-outlined mt-5 pr-6 pl-6">Pay</a>
+            </div>
+            {%endif%}
+    <div class="columns is-multiline">
+        <div class="column" id="address-card">
+            {%include 'payment_address.html'%}
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

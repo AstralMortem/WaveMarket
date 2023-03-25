@@ -1,0 +1,42 @@
+{%extends 'base.html'%}
+{%load crispy_forms_tags%}
+{%load static%}
+{%block content%}
+{%load startwith%}
+
+
+<section class="hero is-primary is-fullheight">
+    <div class="hero-body">
+      <div class="container">
+        <div class="columns is-centered">
+          <div class="column is-5-tablet is-4-desktop is-3-widescreen">
+            <a class="image mb-4" href="/">
+                <img src="{% static 'img/dark_logo.svg' %}">
+              </a>
+            <form action="{{request.path}}" class="box" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{form |crispy}}
+                {%if request.path == "/account/login/"%}
+                  {%if request.session.cart%}
+                    <p class="subtitle is-6" style="color:black">Don`t have account?
+                      <a href="{%url 'account:signup'%}?next={%url 'cart:payment'%}" style="color:hsl(217, 71%, 53%)">Sign Up!</a>
+                    </p>
+                  {%else%}
+                  <p class="subtitle is-6" style="color:black">Don`t have account?
+                    <a href="{%url 'account:signup'%}" style="color:hsl(217, 71%, 53%)">Sign Up!</a>
+                    
+                  </p>
+                  <p class="subtitle is-6">
+                  <a href="{%url 'account:password_reset'%}" style="color:hsl(217, 71%, 53%)">Reset password</a>
+                  </p>
+                  {%endif%}
+                    
+                {%endif%}
+                <input type="submit" class="button is-primary" value="Next"></input>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{%endblock%}

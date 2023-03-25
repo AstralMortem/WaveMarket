@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% block header_content %}
+    {% include 'navigation.html' %}
+{% endblock %}
+{% block content %}
+    <div class="container mt-6">
+        {% for order in items %}
+            <div class="columns is-multiline mt-3">
+                <div class="column">
+                    <div class="card" id="order-card">
+                        <div class="card-content">
+                            <div class="columns is-multiline">
+                                <div class="column is-1">
+                                    {% if order.ordered %}
+                                        <span class="tag is-primary">Ordered</span>
+                                    {% else %}
+                                        <span class="tag is-warning">Pending</span>
+                                        <span class="tag is-danger">
+                                            <a href="{%url 'cart:order-delete' id=order.id%}" class="subtitle is-6">Delete</a>
+                                        </span>
+                                    {% endif %}
+                                </div>
+                                <div class="column is-4">
+                                    <p class="title is-5">Order date: {{ order.ordered_date }}</p>
+                                </div>
+                                <div class="column ">
+                                    <p class="title is-5">Amount: {{ order.get_count }}</p>
+                                </div>
+                                <div class="column">
+                                    <p class="title is-5">
+                                        {% if order.coupon %}
+                                            Coupon: {{ order.coupon.code }} (-{{ order.coupon.amount }}$)
+                                        {% else %}
+                                            Coupon: --
+                                        {% endif %}
+                                    </p>
+                                </div>
+                                <div class="column">
+                                    <p class="title is-5">Total: {{ order.get_total }}$</p>
+                                </div>
+                                {% if order.ordered %}
+                                    <div class="column">
+                                        <a id="order-detail-button">
+                                            <span class="icon">
+                                                <i class="fa-solid fa-ellipsis-vertical"></i>
+                                            </span>
+                                        </a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                        </div>
+                        <div class="column is-12 is-hidden" id="order-detail-card">
+                            <div class="card">
+                                <div class="card-content">
+                                    {% for item in order.items.all %}
+                                        <div class="columns is-multiline">
+                                            <div class="column is-1">
+                                                <figure class="image is-64x64">
+                                                    <img src="{{ item.get_photo }}" alt="{{ item.name }}">
+                                                </figure>
+                                            </div>
+                                            <div class="column">
+                                                <a href="{{ item.get_absolute_url }}">
+                                                    <p class="title is-5">{{ item.name }}</p>
+                                                </a>
+                                            </div>
+                                            <div class="column">
+                                                {% if item.discount_price %}
+                                                    <p>
+                                                        <span class="title is-5">Price:</span>
+                                                        <span class="title is-5" style="color:red;">{{ item.discount_price }}$</span>
+                                                        <span class="title is-6" style="color:gray;"><small><s>{{ item.price }}$</s></small></span>
+                                                    </p>
+                                                {% else %}
+                                                    <p class="title is-5">Price: {{ item.price }}$</p>
+                                                {% endif %}
+                                            </div>
+                                            {% if order.ordered %}
+                                                <div class="column">
+                                                    <p class="title is-5">
+                                                        <a href="{{ item.file.url }}" download>
+                                                            <span class="icon button is-outlined is-rounded is-primary p-4">
+                                                                <i class="fa-solid fa-download"></i>
+                                                            </span>
+                                                        </a>
+                                                    </p>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endblock %}

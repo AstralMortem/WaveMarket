@@ -1,0 +1,5 @@
+{%load crispy_forms_tags%}
+<form hx-post="{%url 'account:profile-update'%}" hx-swap="innerHTML" hx-target="#user-card" enctype="multipart/form-data" >
+    {{form |crispy}}
+    <input type="submit" class="button is-primary" value="Save"></input>
+</form>

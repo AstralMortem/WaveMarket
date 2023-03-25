@@ -1,0 +1,7 @@
+{%with len=request.session.cart|length%}
+
+
+    {%if len > 0 %}
+        {{len}}
+    {%endif%}
+{% endwith %}

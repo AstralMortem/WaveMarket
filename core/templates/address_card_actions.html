@@ -1,0 +1,8 @@
+{%load crispy_forms_tags%}
+
+
+
+<form hx-post="{{request.path}}" hx-swap="innerHTML" hx-target="#address-card">
+    {{form|crispy}}
+    <input type="submit" class="button is-primary" value="Save"></input>
+</form>

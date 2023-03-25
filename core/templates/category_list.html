@@ -1,0 +1,21 @@
+{% load startwith%}
+
+<div class="container mt-5 mb-5">
+    <div class="columns is-multiline">
+        <div class="column has-text-centered">
+            {%if not request.path|startswith:"/tags"%}
+            <a class="button is-primary is-outlined mr-5" id="filter-button"><span class="icon">
+                <i class="fa-solid fa-filter"></i>
+            </span></a>
+            {%else%}
+                <p class="title is-5">#{{view.kwargs.slug}}</p>
+            {%endif%}
+            <a href="/" class="button is-outlined is-dark is-rounded" >All</a>
+            {%for category in categories%}
+                <a href="{{category.get_absolute_url}}" class="button is-outlined is-dark is-rounded">{{category.name}}</a>
+            {%empty%}
+                <p class="title is-5">Empty categories</p>
+            {%endfor%}
+        </div>
+    </div>
+</div>

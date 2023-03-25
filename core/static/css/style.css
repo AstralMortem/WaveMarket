@@ -1,0 +1,43 @@
+html {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  min-width: 320px;
+}
+
+.button {
+  transition: all 0.3s ease-in-out;
+}
+
+.navbar .navbar-dropdown {
+  right: 0;
+  left: auto;
+}
+
+#items_list .column .card:hover{
+  box-shadow: 0 0 50px rgba(33,33,33,.2); 
+}
+
+.menu .card{
+    width: auto;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.user-dropdown {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+input[type="file"]::file-selector-button {
+  display: none;
+}
+
+input[type="file"]::-webkit-file-upload-button {
+  display: none;
+}

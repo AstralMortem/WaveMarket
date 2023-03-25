@@ -1,0 +1,21 @@
+
+<div class="columns is-multiline">
+    <div class="column">
+        <figure class="image is-128x128">
+            <img src="{{request.user.get_photo}}" class="is-rounded"></img>
+        </figure>
+    </div>
+    <div class="column">
+        <p class="title is-5">{{request.user.username}}</p>
+        <p class="title is-5">{{request.user.email}}</p>
+        <p class="title is-5">
+            <a hx-get="{%url 'account:profile-update'%}" hx-swap="innerHTML" hx-target="#user-card">Settings
+                <span class="icon">
+                    <i class="fa-solid fa-gear"></i>
+                </span>
+            </a>
+            <a href="{%url 'account:password_change'%}">Change Password</a>
+        </p>
+    </div>
+</div>
+

@@ -1,0 +1,11 @@
+{% if messages %}
+  {% for message in messages %}
+    <script>
+      bulmaToast.toast({
+        message: '{{message}}',
+        type: 'is-{{message.tags}}',
+        dismissible: true,
+      })
+    </script>
+  {%endfor%}
+{%endif%}

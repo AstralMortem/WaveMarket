@@ -1,0 +1,22 @@
+{% extends 'base_with_panels.html'%}
+
+{%block content%}
+{% load startwith%}
+
+<div class="columns is-multiline">
+    {%if not request.path|startswith:"/tags"%}
+    <div class="column is-2 is-hidden" id="filter-column">
+        {%include 'filter.html'%}
+    </div>
+
+    {%endif%}
+
+    <div class="column">
+        <div class="container">
+            <div class="columns is-multiline" id="items_list">
+                {%include 'item_list.html'%}
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}

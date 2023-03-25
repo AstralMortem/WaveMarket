@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+
+{%block header_content%}
+
+{%include 'navigation.html'%}
+{%endblock%}
+{%load crispy_forms_tags%}
+
+{% block content %}
+
+<div class="container mt-6">
+    <div class="columns is-multiline">
+        <div class="column is-8" id="cart-table">
+            {%include 'cart_table.html'%}
+        </div>
+        <div class="column is-4" id="coupon-form">
+                <div class="card">
+                    <div class="card-content">
+                        <form hx-post="{%url 'cart:coupon-add'%}" hx-swap="innerHTML" hx-target="#cart-table"> 
+                        {{coupon |crispy}}
+                        <input type="submit" class="button is-info is-outlined" value="Add coupon"></input>
+                        </form>
+                    </div>
+                </div>
+        </div>
+            
+    </div>
+</div>
+
+
+
+{% endblock content %}
