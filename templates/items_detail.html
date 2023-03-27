@@ -5,6 +5,7 @@
 {%endblock%}
 
 {% block content %}
+<script src="https://unpkg.com/wavesurfer.js"></script>
 
 <div class="container mt-5">
     <div class="columns is-multiline">
@@ -32,7 +33,8 @@
                             {%endif%}
                             
                             <div class="has-text-centered mt-3 mb-4">
-                                <a hx-get="#" hx-swap='none' class="button is-rounded is-dark is-outlined">Add to cart</a>
+                                <a hx-get="{%url 'cart:cart-add' items_id=items.id%}" hx-swap="none"
+                                    class="button is-rounded is-dark is-outlined">Add to cart</a>
                             </div>
                             <div class="has-text-centered mt-5 mb-3">
                                 {%for tag in items.tags.all%}
@@ -59,17 +61,48 @@
         <div class="column is-12">
             <div class="card">
                 <div class="card-content">
-                    <div class="columns is-multiline">
-                        {%for audio in items.audio_fragments.all%}
-                            <div class="column">
-                                
-                            </div>
-                        {%endfor%}
+                    <p class="title is-4">{{items.name}}</p>
+                    
+                    <div class="">
+                        <a class="button is-rounded is-primary is-outlined p-4 mb-1" id="playbutton">
+                            <span class="icon" >
+                                <i class="fa-solid fa-play" id="play-icon"></i>
+                            </span>
+                        </a>
+                        <div id="waveform"></div>
                     </div>
+
+                    <script>
+                        var playButton = document.getElementById("playbutton");
+                        var wavesurfer = WaveSurfer.create({
+                            container: '#waveform',
+                            waveColor: '#00d1b2',
+                            progressColor: 'purple',
+                            responsive: true,
+                            height: 90,
+                            barRadius:4
+                        });
+                        var path = "{{ items.audio_fragments.url }}"
+                        wavesurfer.load(path);
+
+                        playButton.onclick = function(){
+                            wavesurfer.playPause();
+                            var e = document.getElementById('play-icon');
+                            if (e.classList.contains('fa-play')) {
+                                e.classList.remove('fa-play');
+                                e.classList.add('fa-pause');
+                              } else {
+                                e.classList.remove('fa-pause');
+                                e.classList.add('fa-play');
+                              }
+                        }
+                    </script>
                 </div>
             </div>
         </div>
     </div>
+    
     {%endif%}
 </div>
 {% endblock %}
+

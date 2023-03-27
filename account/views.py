@@ -13,6 +13,11 @@ class UserRegisterView(generic.CreateView):
     template_name = 'registration/login.html'
     success_url = reverse_lazy('account:login')
 
+    def get_context_data(self, *args, **kwargs):
+        context = super(UserRegisterView, self).get_context_data(*args, **kwargs)
+        context['title'] = 'Sign Up | WaveMarket'
+        return context
+
     def form_valid(self, form):
         user = form.save() #save the user
         return HttpResponseRedirect(self.success_url)
@@ -37,7 +42,7 @@ def profile_view(request, *args, **kwargs):
         total += i.get_price_in_items()
         count += i.get_count()
     dict= {'length':count, 'total':total}
-    return render(request, 'profile.html', {'orders':dict})
+    return render(request, 'profile.html', {'orders':dict, 'title': 'Profile | WaveMarket'})
 
 def add_address(request, *args, **kwargs):
     if request.method == 'POST':
@@ -65,5 +70,5 @@ def delete_address(request, id):
 @login_required
 def order_view(request):
     items = Order.objects.filter(user=request.user)
-    return render(request, 'user_orders.html', {'items':items })
+    return render(request, 'user_orders.html', {'items':items, 'title': 'Orders | WaveMarket' })
 

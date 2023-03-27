@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404,redirect, HttpResponse
+from django.template.loader import render_to_string
 from django.views import generic
 from shop.models import Item, Coupon, Order
 from account.models import Customer, Address
@@ -14,14 +15,25 @@ from django_htmx.http import HttpResponseClientRefresh
 from cart.wayforpay_module.wayforpay import WayForPayAPI, PaymentRequests
 from django.contrib.sites.models import Site
 from django.views.decorators.csrf import csrf_exempt
+from django.core.mail import EmailMultiAlternatives
 
+
+def send_email(order, email_from, email_to):
+    msg = EmailMultiAlternatives(f"Your order {order.id}", "Your successful order with links",email_from, email_to)
+    site = Site.objects.get_current()
+
+    html_content = render_to_string(
+        'email.html', {"order": order, "site":site.domain}
+    )
+    msg.attach_alternative(html_content, "text/html")
+    msg.send()
 
 def cart_length(request):
     return render(request, "cart_length.html")
 
 def cart_view(request, *args, **kwargs):
     cart = Cart(request)
-    return render(request, 'cart.html', {'cart': cart, 'coupon':CouponForm()} )
+    return render(request, 'cart.html', {'cart': cart, 'coupon':CouponForm(), 'title': 'Cart | WaveMarket'} )
 
 def cart_add(request, items_id,*args, **kwargs):
     cart = Cart(request)
@@ -50,9 +62,12 @@ def coupon_add(request):
             else:
                 try:
                     coupon = Coupon.objects.get(code=coupon_code)
-                    request.session['coupon'] = coupon_code
-                    request.session.modified = True
-                    messages.success(request, "Coupon successfully added")
+                    if coupon.is_used == False:
+                        request.session['coupon'] = coupon_code
+                        request.session.modified = True
+                        messages.success(request, "Coupon successfully added")
+                    else:
+                        messages.info(request, "Coupon already used")
                 except:
                     messages.error(request, "Coupon does not exist")
 
@@ -157,9 +172,10 @@ def payment_view(request):
         widget = widget.generateForm(data)
         cart = Cart(request)
         cart.clear()
-        return render(request, 'wayforpaywidget.html', {'widget': widget})
+        
+        return render(request, 'wayforpaywidget.html', {'widget': widget, 'title': 'Payment | WaveMarket'})
     else:
-        messages.error(request, 'Please add an address first')
+        messages.error(request, 'Please add an address first', {'title': 'Payment | WaveMarket'})
         response = render(request,'payment.html')
         response["HX-Trigger"] = 'message'
         return response
@@ -173,7 +189,9 @@ def payment_finish(request):
         order = Order.objects.get(id=order_id)
         order.ordered = True
         order.save()
-        messages.success(request, 'Payment successful')
+        user = get_object_or_404(settings.AUTH_USER_MODEL, order=order)
+        send_email(order, "wavemarketua@gmail.com", [user.email])
+        messages.success(request, 'Payment successful',{'title': 'Success | WaveMarket'})
         response = render(request, 'success_pay.html', {'order': order})
         response['HX-Trigger'] = 'message'
         return response

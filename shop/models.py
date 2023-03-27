@@ -7,17 +7,12 @@ import uuid
 class Coupon(models.Model):
     code = models.CharField(max_length=15)
     amount = models.DecimalField(max_digits=8, decimal_places=2)
+    is_used = models.BooleanField(default=False)
 
     def __str__(self):
         return self.code
 
 
-class AudioFragment(models.Model):
-    name = models.CharField(max_length=100)
-    file = models.FileField(upload_to="product/audio/%Y/%m/%d")
-
-    def __str__(self):
-        return self.name
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -46,7 +41,7 @@ class Item(models.Model):
     price = models.DecimalField(max_digits=8, decimal_places=2)
     discount_price = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
     description = models.TextField()
-    audio_fragments = models.ManyToManyField(AudioFragment)
+    audio_fragments = models.FileField(upload_to='product/audio/%Y/%m/%d', null=True, blank=True)
     file = models.FileField(upload_to="product/files/%Y/%m/%d")
     likes = models.ManyToManyField(settings.AUTH_USER_MODEL)
 

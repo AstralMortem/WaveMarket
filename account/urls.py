@@ -1,4 +1,5 @@
-from django.urls import path, include
+from django.urls import path, include, reverse_lazy
+from django.contrib.auth import views as auth_views    
 from . import views
 
 
@@ -6,7 +7,6 @@ app_name = 'account'
 
 urlpatterns = [
    path('signup/', views.UserRegisterView.as_view(), name="signup"),
-   path('',include("django.contrib.auth.urls")),
    path('', views.profile_view, name="profile"),
    path('orders/', views.order_view, name="orders"),
 

@@ -16,21 +16,23 @@
             <form action="{{request.path}}" class="box" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{form |crispy}}
-                {%if request.path == "/account/login/"%}
+                {%if request.path == "/login/"%}
                   {%if request.session.cart%}
                     <p class="subtitle is-6" style="color:black">Don`t have account?
                       <a href="{%url 'account:signup'%}?next={%url 'cart:payment'%}" style="color:hsl(217, 71%, 53%)">Sign Up!</a>
                     </p>
+                    <p class="subtitle is-6">
+                      <a href="{%url 'password_reset'%}" style="color:hsl(217, 71%, 53%)">Reset password</a>
+                      </p>
                   {%else%}
                   <p class="subtitle is-6" style="color:black">Don`t have account?
                     <a href="{%url 'account:signup'%}" style="color:hsl(217, 71%, 53%)">Sign Up!</a>
                     
                   </p>
                   <p class="subtitle is-6">
-                  <a href="{%url 'account:password_reset'%}" style="color:hsl(217, 71%, 53%)">Reset password</a>
-                  </p>
+                    <a href="{%url 'password_reset'%}" style="color:hsl(217, 71%, 53%)">Reset password</a>
+                    </p>
                   {%endif%}
-                    
                 {%endif%}
                 <input type="submit" class="button is-primary" value="Next"></input>
             </form>
