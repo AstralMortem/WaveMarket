@@ -191,8 +191,8 @@ def payment_finish(request):
         order.save()
         user = get_object_or_404(settings.AUTH_USER_MODEL, order=order)
         send_email(order, "wavemarketua@gmail.com", [user.email])
-        messages.success(request, 'Payment successful',{'title': 'Success | WaveMarket'})
-        response = render(request, 'success_pay.html', {'order': order})
+        messages.success(request, 'Payment successful')
+        response = render(request, 'success_pay.html', {'order': order, 'title': 'Success | WaveMarket'})
         response['HX-Trigger'] = 'message'
         return response
     else:
