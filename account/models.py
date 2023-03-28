@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django_countries.fields import CountryField
+
+
+
 # Create your models here.
 class Address(models.Model):
     country = CountryField()
@@ -14,7 +17,7 @@ class Address(models.Model):
         return self.city + ", " + self.state + ", " + self.zip + "," + self.street + "," + self.build
 
 class Customer(AbstractUser):
-    photo = models.ImageField(upload_to="users/photo", blank=True, null=True)
+    photo = models.ImageField(upload_to="users/photo/%Y", blank=True, null=True)
     birth_date = models.DateField(null=True, blank=True)
     discount = models.IntegerField(default=0)
     address = models.ForeignKey(Address, blank=True, null=True, on_delete=models.SET_NULL)

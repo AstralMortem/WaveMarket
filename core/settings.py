@@ -180,3 +180,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'wavemarketua@gmail.com'
 EMAIL_HOST_PASSWORD = os.environ.get("SMTP_PASSWORD")
+
+
+DEFAULT_FILE_STORAGE = "storages.backends.dropbox.DropBoxStorage"
+DROPBOX_OAUTH2_TOKEN = os.environ.get('DROPBOX_STORAGE')

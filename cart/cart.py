@@ -47,6 +47,8 @@ class Cart():
        del self.session[settings.CART_SESSION_ID]
        if self.session.get('coupon', None):
            del self.session['coupon']
+           self.coupon.is_used = True
+           self.coupon.save()
        messages.success(self.request, "Successfully cleared cart")
        self.session.modified = True
 

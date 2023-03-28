@@ -2,6 +2,9 @@ from django.db import models
 from django.conf import settings
 from django.urls import reverse
 import uuid
+from django.core.files.storage import FileSystemStorage
+fs = FileSystemStorage()
+
 # Create your models here.
 
 class Coupon(models.Model):
@@ -36,15 +39,13 @@ class Item(models.Model):
     slug = models.SlugField(max_length=200)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     tags = models.ManyToManyField(Tag)
-    photo = models.ImageField(upload_to="product/images/%Y/%m/%d")
+    photo = models.ImageField(upload_to="product/images/%Y")
 
     price = models.DecimalField(max_digits=8, decimal_places=2)
     discount_price = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
     description = models.TextField()
-    audio_fragments = models.FileField(upload_to='product/audio/%Y/%m/%d', null=True, blank=True)
-    file = models.FileField(upload_to="product/files/%Y/%m/%d")
-    likes = models.ManyToManyField(settings.AUTH_USER_MODEL)
-
+    audio_fragments = models.FileField(upload_to='product/audio/%Y', null=True, blank=True)
+    file = models.FileField(upload_to="product/files/%Y")
     created_at = models.DateTimeField(auto_now_add=True,null=True, blank=True)
 
     def __str__(self):
