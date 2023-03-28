@@ -1,4 +1,7 @@
 from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()
 
 import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -8,7 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# SECURITY WARNING: keep the secret key used in production secret
 SECRET_KEY = os.environ.get("SECRET_KEY","super_secret_keu@##$@#$")
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -186,4 +189,4 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = 'wavemarket'
-AWS_QUERY_STRING = False
+AWS_QUERYSTRING_AUTH = False
