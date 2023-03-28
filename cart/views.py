@@ -102,7 +102,7 @@ def delete_order(request,id):
 
 
 @csrf_exempt
-@login_required(login_url="account:login")
+@login_required(login_url="login")
 def payment_view(request):
     if request.user.address:
         last_order = Order.objects.filter(user=request.user)
@@ -175,8 +175,8 @@ def payment_view(request):
         
         return render(request, 'wayforpaywidget.html', {'widget': widget, 'title': 'Payment | WaveMarket'})
     else:
-        messages.error(request, 'Please add an address first', {'title': 'Payment | WaveMarket'})
-        response = render(request,'payment.html')
+        messages.error(request, 'Please add an address first')
+        response = render(request,'payment.html', {'title': 'Payment | WaveMarket'})
         response["HX-Trigger"] = 'message'
         return response
 
